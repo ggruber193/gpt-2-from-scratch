@@ -1,0 +1,7 @@
+.idea
+/.idea/
+/.venv/
+/data/
+src/lightning_logs
+src/mlruns
+.env
