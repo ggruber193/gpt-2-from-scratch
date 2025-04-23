@@ -30,7 +30,7 @@ if __name__ == '__main__':
     torch.cuda.manual_seed_all(1337)
     torch.set_float32_matmul_precision('high')
 
-    B = 16
+    B = 2
     T = 1024
     grad_accum_steps = 64
 
@@ -38,9 +38,9 @@ if __name__ == '__main__':
     dm_hellaswag.prepare_data()
     dm_hellaswag.setup("fit")
 
-    # dm_fineweb = FineWebDatamodule("../data/fineweb", sample="10BT")
-    # dm_fineweb.prepare_data()
-    # dm_fineweb.setup("fit")
+    dm_fineweb = FineWebDatamodule("../data/fineweb", sample="10BT")
+    dm_fineweb.prepare_data()
+    dm_fineweb.setup("fit")
 
     model = GPT2.from_pretrained("gpt2")
 
@@ -60,4 +60,4 @@ if __name__ == '__main__':
 
     trainer = Trainer(accelerator="auto", max_epochs=10, accumulate_grad_batches=grad_accum_steps,
                       precision="bf16-mixed", logger=logger)
-    trainer.fit(model, train_dataloaders=dm_hellaswag.train_dataloader(), val_dataloaders=dm_hellaswag.val_dataloader())
+    trainer.fit(model, train_dataloaders=dm_fineweb.train_dataloader(), val_dataloaders=dm_hellaswag.val_dataloader())
